@@ -17,12 +17,15 @@ const ProjectListComponent = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log('Fetching projects...');
     fetchProjects()
       .then((data) => {
+        console.log('Projects fetched successfully:', data);
         setProjects(data);
         setLoading(false);
       })
       .catch((err) => {
+        console.error('Error fetching projects:', err);
         setError('Failed to fetch projects');
         setLoading(false);
       });

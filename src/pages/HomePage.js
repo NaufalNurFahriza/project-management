@@ -4,7 +4,6 @@ import AddProjectForm from '../components/AddProjectForm';
 
 const Home = () => {
   const handleProjectAdded = () => {
-    // Force ProjectListComponent to refresh
     window.location.reload();
   };
 

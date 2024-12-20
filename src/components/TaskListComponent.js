@@ -16,21 +16,31 @@ const TaskListComponent = ({ projectId }) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
+      console.log(`Fetching tasks for project ID: ${projectId}`);
       fetchTasks(projectId)
         .then((data) => {
+          console.log('Tasks fetched successfully:', data);
           setTasks(data);
           setLoading(false);
         })
         .catch((err) => {
+          console.error('Error fetching tasks:', err);
           setError('Failed to fetch tasks');
           setLoading(false);
         });
     }, [projectId]);
   
     const handleTaskUpdated = () => {
+      console.log(`Refreshing tasks for project ID: ${projectId}`);
       fetchTasks(projectId)
-        .then((data) => setTasks(data))
-        .catch((err) => setError('Failed to fetch tasks'));
+      .then((data) => {
+        console.log('Tasks refreshed successfully:', data); // Debug: Log refreshed tasks
+        setTasks(data);
+      })
+      .catch((err) => {
+        console.error('Error refreshing tasks:', err); // Debug: Log refresh error
+        setError('Failed to fetch tasks');
+      });
     };
   
     if (loading) return <CircularProgress sx={{ margin: 4 }} />;

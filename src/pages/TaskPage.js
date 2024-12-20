@@ -7,7 +7,6 @@ const Task = () => {
   const { projectId } = useParams();
 
   const handleTaskAdded = () => {
-    // Force TaskListComponent to refresh
     window.location.reload();
   };
 

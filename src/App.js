@@ -1,18 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline, Container } from '@mui/material'; // Added Container here
+import { Container } from '@mui/material';
 import Navbar from './components/Navbar';
 import Home from './pages/HomePage';
 import Task from './pages/TaskPage';
 
-const theme = createTheme({
-  // Customize theme here
-});
-
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+
       <Router>
         <div>
           <Navbar />
@@ -24,7 +19,6 @@ const App = () => {
           </Container>
         </div>
       </Router>
-    </ThemeProvider>
   );
 };
 

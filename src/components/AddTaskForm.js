@@ -24,19 +24,24 @@ const AddTaskForm = ({ projectId, onTaskAdded }) => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       setStatus({ type: '', message: '' });
+      console.log('Submitting task with data:', formData);
   
       try {
-        await createTask(projectId, formData);
+        const result = await createTask(projectId, formData);
+        console.log('API Response:', result); 
         setFormData({ name: '', status: 'To Do' });
         setStatus({ type: 'success', message: 'Task created successfully!' });
         if (onTaskAdded) onTaskAdded();
       } catch (err) {
+        console.error('Error creating task:', err);
         setStatus({ type: 'error', message: 'Failed to create task' });
       }
     };
   
     const handleChange = (e) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      const updatedFormData = { ...formData, [e.target.name]: e.target.value };
+      console.log('Updated formData:', updatedFormData);
+      setFormData(updatedFormData);
     };
 
   return (

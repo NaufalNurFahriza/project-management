@@ -20,19 +20,24 @@ const AddProjectForm = ({ onProjectAdded }) => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       setStatus({ type: '', message: '' });
+      console.log('Submitting form with data:', formData);
   
       try {
-        await createProject(formData);
+        const result = await createProject(formData);
+        console.log('API Response:', result);
         setFormData({ name: '', description: '' });
         setStatus({ type: 'success', message: 'Project created successfully!' });
         if (onProjectAdded) onProjectAdded();
       } catch (err) {
+        console.error('Error creating project:', err);
         setStatus({ type: 'error', message: 'Failed to create project' });
       }
     };
   
     const handleChange = (e) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
+      const updatedFormData = { ...formData, [e.target.name]: e.target.value };
+      console.log('Updated formData:', updatedFormData);
+      setFormData(updatedFormData);
     };
 
   return (
