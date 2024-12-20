@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { 
+  Card, 
+  CardContent, 
+  TextField, 
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button, 
+  Typography, 
+  Alert,
+  Box
+} from '@mui/material';
 
 const AddTaskForm = ({ projectId, onTaskAdded }) => {
   const [formData, setFormData] = useState({
@@ -27,49 +40,55 @@ const AddTaskForm = ({ projectId, onTaskAdded }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto my-4 bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold mb-4">Add New Task</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Task Name</label>
-          <input
-            type="text"
+    <Card sx={{ maxWidth: 600, margin: '2rem auto' }}>
+      <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>
+          Add New Task
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            label="Task Name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             required
+            margin="normal"
           />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Status</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            required
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Status</InputLabel>
+            <Select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              label="Status"
+              required
+            >
+              <MenuItem value="To Do">To Do</MenuItem>
+              <MenuItem value="In Progress">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+            </Select>
+          </FormControl>
+          <Button 
+            type="submit" 
+            variant="contained" 
+            color="primary" 
+            fullWidth 
+            sx={{ mt: 2 }}
           >
-            <option value="To Do">To Do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
-        >
-          Add Task
-        </button>
-      </form>
-      {status.message && (
-        <div className={`mt-4 p-3 rounded ${
-          status.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-        }`}>
-          {status.message}
-        </div>
-      )}
-    </div>
+            Add Task
+          </Button>
+        </Box>
+        {status.message && (
+          <Alert 
+            severity={status.type === 'error' ? 'error' : 'success'}
+            sx={{ mt: 2 }}
+          >
+            {status.message}
+          </Alert>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

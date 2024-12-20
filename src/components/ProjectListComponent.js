@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  Button, 
+  Grid,
+  CircularProgress,
+  Alert 
+} from '@mui/material';
 
 const ProjectListComponent = () => {
   const [projects, setProjects] = useState([]);
@@ -22,29 +31,38 @@ const ProjectListComponent = () => {
     }
   };
 
-  if (loading) return <div className="p-4">Loading projects...</div>;
-  if (error) return <div className="p-4 text-red-500">{error}</div>;
+  if (loading) return <CircularProgress sx={{ margin: 4 }} />;
+  if (error) return <Alert severity="error" sx={{ margin: 4 }}>{error}</Alert>;
 
   return (
-    <div className="grid gap-4 p-4">
+    <Grid container spacing={3} sx={{ padding: 4 }}>
       {projects.map((project) => (
-        <div key={project.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold">{project.name}</h3>
-            <Link 
-              to={`/tasks/${project.id}`}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              View Tasks
-            </Link>
-          </div>
-          <p className="text-gray-600">{project.description}</p>
-          <p className="text-sm text-gray-400 mt-2">
-            Created: {new Date(project.created_at).toLocaleDateString()}
-          </p>
-        </div>
+        <Grid item xs={12} md={6} key={project.id}>
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div" gutterBottom>
+                {project.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" paragraph>
+                {project.description}
+              </Typography>
+              <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+                Created: {new Date(project.created_at).toLocaleDateString()}
+              </Typography>
+              <Button 
+                component={Link} 
+                to={`/tasks/${project.id}`}
+                variant="contained" 
+                color="primary"
+                sx={{ mt: 2 }}
+              >
+                View Tasks
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 };
 

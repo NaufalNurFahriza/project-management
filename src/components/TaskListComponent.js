@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskItem from './TaskItem';
+import { 
+  Card, 
+  CardContent, 
+  Typography, 
+  CircularProgress,
+  Alert,
+  Stack
+} from '@mui/material';
 
 const TaskListComponent = ({ projectId }) => {
   const [tasks, setTasks] = useState([]);
@@ -26,27 +34,33 @@ const TaskListComponent = ({ projectId }) => {
     fetchTasks();
   };
 
-  if (loading) return <div className="p-4">Loading tasks...</div>;
-  if (error) return <div className="p-4 text-red-500">{error}</div>;
+  if (loading) return <CircularProgress sx={{ margin: 4 }} />;
+  if (error) return <Alert severity="error" sx={{ margin: 4 }}>{error}</Alert>;
 
   return (
-    <div className="bg-white rounded-lg shadow-md m-4 p-6">
-      <h2 className="text-2xl font-bold mb-4">Project Tasks</h2>
-      <div className="space-y-4">
-        {tasks.length === 0 ? (
-          <p className="text-gray-500">No tasks found for this project.</p>
-        ) : (
-          tasks.map((task) => (
-            <TaskItem 
-              key={task.id} 
-              task={task} 
-              onTaskUpdated={handleTaskUpdated}
-            />
-          ))
-        )}
-      </div>
-    </div>
+    <Card sx={{ margin: 4 }}>
+      <CardContent>
+        <Typography variant="h5" component="div" gutterBottom>
+          Project Tasks
+        </Typography>
+        <Stack spacing={2}>
+          {tasks.length === 0 ? (
+            <Typography color="text.secondary">
+              No tasks found for this project.
+            </Typography>
+          ) : (
+            tasks.map((task) => (
+              <TaskItem 
+                key={task.id} 
+                task={task} 
+                onTaskUpdated={handleTaskUpdated}
+              />
+            ))
+          )}
+        </Stack>
+      </CardContent>
+    </Card>
   );
 };
 
-export default TaskListComponent;
+export default TaskListComponent

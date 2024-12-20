@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import TaskListComponent from '../components/TaskListComponent';
+import TaskListComponent from '../components/TaskListComponent'
 import AddTaskForm from '../components/AddTaskForm';
 
 const Task = () => {
