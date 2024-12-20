@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchProjects } from '../utils/api/apiProvider';
 import { Link } from 'react-router-dom';
 import { 
   Card, 
@@ -17,19 +17,16 @@ const ProjectListComponent = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjects()
+      .then((data) => {
+        setProjects(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to fetch projects');
+        setLoading(false);
+      });
   }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const response = await axios.get('https://test-fe.sidak.co.id/api/projects');
-      setProjects(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch projects');
-      setLoading(false);
-    }
-  };
 
   if (loading) return <CircularProgress sx={{ margin: 4 }} />;
   if (error) return <Alert severity="error" sx={{ margin: 4 }}>{error}</Alert>;

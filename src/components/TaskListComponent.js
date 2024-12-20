@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchTasks } from '../utils/api/apiProvider';
 import TaskItem from './TaskItem';
 import { 
   Card, 
@@ -11,31 +11,31 @@ import {
 } from '@mui/material';
 
 const TaskListComponent = ({ projectId }) => {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get(`https://test-fe.sidak.co.id/api/projects/${projectId}/tasks`);
-      setTasks(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch tasks');
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, [projectId]);
-
-  const handleTaskUpdated = () => {
-    fetchTasks();
-  };
-
-  if (loading) return <CircularProgress sx={{ margin: 4 }} />;
-  if (error) return <Alert severity="error" sx={{ margin: 4 }}>{error}</Alert>;
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      fetchTasks(projectId)
+        .then((data) => {
+          setTasks(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError('Failed to fetch tasks');
+          setLoading(false);
+        });
+    }, [projectId]);
+  
+    const handleTaskUpdated = () => {
+      fetchTasks(projectId)
+        .then((data) => setTasks(data))
+        .catch((err) => setError('Failed to fetch tasks'));
+    };
+  
+    if (loading) return <CircularProgress sx={{ margin: 4 }} />;
+    if (error) return <Alert severity="error" sx={{ margin: 4 }}>{error}</Alert>;
+    
 
   return (
     <Card sx={{ margin: 4 }}>

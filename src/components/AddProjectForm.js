@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { createProject } from '../utils/api/apiProvider';
 import { 
   Card, 
   CardContent, 
@@ -11,29 +11,29 @@ import {
 } from '@mui/material';
 
 const AddProjectForm = ({ onProjectAdded }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    description: ''
-  });
-  const [status, setStatus] = useState({ type: '', message: '' });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus({ type: '', message: '' });
-
-    try {
-      await axios.post('https://test-fe.sidak.co.id/api/projects', formData);
-      setFormData({ name: '', description: '' });
-      setStatus({ type: 'success', message: 'Project created successfully!' });
-      if (onProjectAdded) onProjectAdded();
-    } catch (err) {
-      setStatus({ type: 'error', message: 'Failed to create project' });
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const [formData, setFormData] = useState({
+      name: '',
+      description: ''
+    });
+    const [status, setStatus] = useState({ type: '', message: '' });
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setStatus({ type: '', message: '' });
+  
+      try {
+        await createProject(formData);
+        setFormData({ name: '', description: '' });
+        setStatus({ type: 'success', message: 'Project created successfully!' });
+        if (onProjectAdded) onProjectAdded();
+      } catch (err) {
+        setStatus({ type: 'error', message: 'Failed to create project' });
+      }
+    };
+  
+    const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
   return (
     <Card sx={{ maxWidth: 600, margin: '2rem auto' }}>
